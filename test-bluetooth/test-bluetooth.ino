@@ -48,4 +48,5 @@ void loop()
     count++;//Increment the line counter
   }
   delay(100);//Pause for a moment 
+  //Serial.println("end loop");
 }
