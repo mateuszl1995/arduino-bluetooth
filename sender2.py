@@ -1,9 +1,14 @@
+#!/usr/bin/env python
+
 from tkinter import *
 import bluetooth
-from os import walk
+import os
 from os.path import isfile, join
+import json
+
 
 port = 1
+musicDir = 'melodies'
 
 def findDevice(name):
 	nearby_devices = bluetooth.discover_devices()
@@ -12,7 +17,6 @@ def findDevice(name):
 			return i;
 
 def main(port):
-	port = 1
 	sock = bluetooth.BluetoothSocket( bluetooth.RFCOMM )
 	sock.connect((findDevice('HC-05'), port))
 	print('Connected')
@@ -21,11 +25,23 @@ def main(port):
 
 
 def communication(sock):
-	while 1==1:
-		data = sock.recv(1024);
-		print(str(data.decode("UTF-8")));
-		sock.send(data)
-def getFilesInDir(path):
-	return [f for f in listdir(path) if isfile(join(path, f))]
 
-print(getFilesInDir('melodies'))
+	data = sock.recv(1024);
+	print(data)
+	if data == 'S':
+		dataToSend = prepareDataForSend(musicDir+'/kotek_na_plotek.json')
+		sock.send(dataToSend)
+
+def getFilesInDir(path):
+	return [f for f in os.listdir(path) if isfile(join(path, f))]
+
+def getJsonFileContent(fileName):
+	return json.load(open(fileName))
+
+def prepareDataForSend(name):
+	data = getJsonFileContent(name)
+	dataToSend = data['name'] + ';' + ','.join(str(int(e['note'][1])* 7 + ord(e['note'][0]) - ord('A')) + ':'+ str(e['duration']) for e in data['notes'])
+	print(dataToSend)
+	return dataToSend;
+
+main(port)
