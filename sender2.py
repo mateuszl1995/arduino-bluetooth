@@ -25,7 +25,6 @@ def main(port):
 
 
 def communication(sock):
-
 	data = sock.recv(1024);
 	print(data)
 	if data == 'S':
@@ -40,8 +39,10 @@ def getJsonFileContent(fileName):
 
 def prepareDataForSend(name):
 	data = getJsonFileContent(name)
-	dataToSend = data['name'] + ';' + ','.join(str(int(e['note'][1])* 7 + ord(e['note'][0]) - ord('A')) + ':'+ str(e['duration']) for e in data['notes'])
+	dataToSend = data['name'] + ';' + ','.join(e['note'] + ':' + str(e['duration']) for e in data['notes'])
 	print(dataToSend)
 	return dataToSend;
 
-main(port)
+#main(port)
+
+dataToSend = prepareDataForSend(musicDir+'/kotek_na_plotek.json')
