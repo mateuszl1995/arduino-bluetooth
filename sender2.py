@@ -20,16 +20,19 @@ def main(port):
 	sock = bluetooth.BluetoothSocket( bluetooth.RFCOMM )
 	sock.connect((findDevice('HC-05'), port))
 	print('Connected')
-	communication(sock)
+	while 1==1:
+		communication(sock)
 	sock.close()
 
 
 def communication(sock):
 	data = sock.recv(1024);
-	print(data)
-	if data == 'S':
-		dataToSend = prepareDataForSend(musicDir+'/kotek_na_plotek.json')
-		sock.send(dataToSend)
+	print(type(data))
+	input = [int(i) for i in data] 
+	#print(data.length)
+	print(input)
+	print("--------")
+	
 
 def getFilesInDir(path):
 	return [f for f in os.listdir(path) if isfile(join(path, f))]
@@ -43,6 +46,6 @@ def prepareDataForSend(name):
 	print(dataToSend)
 	return dataToSend;
 
-#main(port)
+main(port)
 
-dataToSend = prepareDataForSend(musicDir+'/kotek_na_plotek.json')
+# dataToSend = prepareDataForSend(musicDir+'/kotek_na_plotek.json')

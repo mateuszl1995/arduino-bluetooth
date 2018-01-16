@@ -46,11 +46,15 @@ void setup()
   options = 2;
   song_id = 0;
   refresh_display();
+  
+  bluetooth.write("Start transmission");
+  require_notes(5, 3, 13);
 }
 
 void loop()
 {
   
+  delay(4000);
 }
 
 void interrupt_red()
@@ -170,6 +174,8 @@ void bluetooth_write(short n) {
   char x2 = n & 0xff;
   bluetooth.write(x1);
   bluetooth.write(x2);
+  Serial.write(x1);
+  Serial.write(x2);
 }
 
 void require_songs(short first, short last) {
@@ -183,6 +189,7 @@ void require_notes(short song_index, short first_note, short last_note) {
   bluetooth_write(song_index);
   bluetooth_write(first_note);
   bluetooth_write(last_note);
+  Serial.write('N');
 }
 
 
