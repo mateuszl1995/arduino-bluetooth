@@ -12,3 +12,11 @@ def prepareDataForSend(name):
 	dataToSend = data['name'] + ';' + ','.join(e['note'] + ':' + str(e['duration']) for e in data['notes'])
 	print(dataToSend)
 	return dataToSend;
+
+def getSongName(name):
+	data = getJsonFileContent(name)
+	return data['name'];
+
+def getNotes(name):
+	data = getJsonFileContent(name)
+	return [[e['note'], str(e['duration'])] for e in data['notes']]

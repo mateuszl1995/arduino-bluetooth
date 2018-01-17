@@ -1,4 +1,5 @@
 from constants import *
+from file_processing import *
 
 class SongsRequest:
 
@@ -27,4 +28,8 @@ class SongsRequest:
 		self.params = []
 
 	def sendData(self, sock):
-		print('Received songs request:', self.params)
+		songs = getFilesInDir(musicDir)
+		startIndex = self.params[0] * 255 + self.params[1]
+		endIndex = self.params[2] * 255 + self.params[3]
+		songsToSend = [getSongName(musicDir + '/' + i) for i in songs[startIndex:endIndex]]
+		print('Received songs request:', self.params, songsToSend)

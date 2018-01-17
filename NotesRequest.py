@@ -1,4 +1,5 @@
 from constants import *
+from file_processing import *
 
 class NotesRequest:
 
@@ -27,4 +28,14 @@ class NotesRequest:
 		self.params = []
 
 	def sendData(self, sock):
-		print('Received notes request:', self.params)
+		songs = getFilesInDir(musicDir)
+		songIndex = self.params[0] * 255 + self.params[1]
+		songContentToSend = 'Index out of range'
+		if songIndex < len(songs):
+			song = songs[songIndex]
+			songContent = getNotes(musicDir + '/' + song)
+			startIndex = self.params[2] * 255 + self.params[3]
+			endIndex = self.params[4] * 255 + self.params[5]
+
+			songContentToSend = songContent[startIndex:endIndex]
+		print('Received notes request:', self.params, songContentToSend)
