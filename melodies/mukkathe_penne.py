@@ -1,4 +1,58 @@
+{
+  "name": "Mukkathe Penne",
+  "notes": [
+    {
+      "note": "D4",
+      "duration" : 8
+    },
+    {
+      "note": "G4",
+      "duration" : 4
+    },
+    {
+      "note": "D4",
+      "duration" : 8
+    },
+    {
+      "note": "G4",
+      "duration" : 4
+    },
+    {
+      "note": "D4",
+      "duration" : 8
+    },
+    {
+      "note": "G4",
+      "duration" : 4
+    },
+    {
+      "note": "D4",
+      "duration" : 8
+    },
+    {
+      "note": "G4",
+      "duration" : 4
+    },
+    {
+      "note": "D4",
+      "duration" : 8
+    },
+    {
+      "note": "G4",
+      "duration" : 4
+    },
+    {
+      "note": "D4",
+      "duration" : 8
+    },
+    {
+      "note": "G4",
+      "duration" : 4
+    }
+  ]
+}
 
+{
   NOTE_D4, NOTE_G4, NOTE_FS4, NOTE_A4,
   NOTE_G4, NOTE_C5, NOTE_AS4, NOTE_A4,                   
   NOTE_FS4, NOTE_G4, NOTE_A4, NOTE_FS4, NOTE_DS4, NOTE_D4,
