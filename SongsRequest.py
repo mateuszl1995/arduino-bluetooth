@@ -29,7 +29,31 @@ class SongsRequest:
 
 	def sendData(self, sock):
 		songs = getFilesInDir(musicDir)
-		startIndex = self.params[0] * 255 + self.params[1]
-		endIndex = self.params[2] * 255 + self.params[3]
+		startIndex = self.params[0] * 256 + self.params[1]
+		endIndex = self.params[2] * 256 + self.params[3]
 		songsToSend = [getSongName(musicDir + '/' + i) for i in songs[startIndex:endIndex]]
 		print('Received songs request:', self.params, songsToSend)
+		
+		sock.send('P')
+		size = 5
+		for i in songsToSend:
+			size += (len(i) + 1)
+		print(size)
+		x = size.to_bytes(2, byteorder='big')
+		sock.send(bytes([x[0]]))
+		sock.send(bytes([x[1]]))
+		
+		l = len(songs)
+		print(l)
+		x = l.to_bytes(2, byteorder='big')
+		sock.send(bytes([x[0]]))
+		sock.send(bytes([x[1]]))
+		
+		for i in songsToSend:
+			sock.send(bytes(i, "UTF-8"))
+			sock.send(chr(0))
+			#for c in songsToSend[i]:
+				
+		
+		
+		

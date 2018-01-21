@@ -3,7 +3,7 @@ from SongsRequest import SongsRequest
 from NotesRequest import NotesRequest
 from constants import *
 from tkinter import *
-#import bluetooth
+import bluetooth
 
 state = CommState.NONE;
 songsRequest = SongsRequest()
