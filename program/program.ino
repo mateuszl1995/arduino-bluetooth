@@ -7,6 +7,8 @@
 #define MELODY_SIZE 250
 #define BUFFER_SIZE 510
 #define MAX_TIMEOUT 1000
+#define SONGS_SIZE 2
+#define NOTES_SIZE 10
 
 #include <SimpleTimer.h>
 #include <QueueArray.h>
@@ -37,13 +39,12 @@ void setup()
 
   state = MENU;
   song_id = song_count = note_id = note_count = 0;
-  song_count = 3;
+  song_count = 1;
   option = 0;
   screen.refresh(state);
 
   Serial.println("start");
   
-  bluetooth.require_songs(0, song_count);
   timer.setInterval(1000, updateTimer);
 }
 
@@ -81,6 +82,9 @@ void interrupt_red()
     }
     else if (state == MENU) {
       if (option == 0) {
+        if (songs.count() == 0) {
+          bluetooth.require_songs(0, SONGS_SIZE);
+        }
         state = LIST;        
       }
       else {
@@ -113,14 +117,11 @@ void interrupt_blue()
       option = (option + 1) % 2;
     else if (state == LIST) {
       char * song = songs.pop();
-      //if (songs.count() == song_count-1)
-        songs.my_push(song);
-        logg("xxx ", song);
-      //else
-       // delete song;
+      delete song;
       song_id = (song_id + 1) % song_count;
+      short required_song = (song_id + songs.count()) % song_count;
+      bluetooth.require_songs(required_song, required_song+1);
     }
-    logg("refresh state, songs.count = ", songs.front2());
     screen.refresh(state);
   }
   last_interrupt_time = interrupt_time;
@@ -141,6 +142,7 @@ void test_melody() {
 }
 
 void updateTimer() {
+  //logg("update timer", "");
   if (state == SONG)
      screen.refresh(state);
 }

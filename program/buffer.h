@@ -20,7 +20,7 @@ public:
       screen.refresh(state);
     }
     if (buffer[0] == 'N') {
-      note_count = (frame_size-3) / 2;
+      note_count = 256 * buffer[1] + buffer[2];
       for (int i = 3; i < frame_size; i+=2) {
         Note n(buffer[i], buffer[i+1]);
         notes.my_push(n);
