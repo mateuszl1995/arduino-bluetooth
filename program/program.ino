@@ -8,6 +8,7 @@
 #define BUFFER_SIZE 510
 #define MAX_TIMEOUT 1000
 #define SONGS_SIZE 2
+#define NOTES_SIZE 200
 
 #include <SimpleTimer.h>
 #include <QueueArray.h>
@@ -57,7 +58,11 @@ void loop()
         Note n = notes.pop();
         n.play();
         next_note_time = now + 1300 / n.timing;
-        //note_id++;
+        note_id++;
+        Serial.print("Note: "); Serial.print(note_id); Serial.print("/"); Serial.println(note_count);
+        if (note_id + notes.count() < note_count && notes.count() < NOTES_SIZE / 2) {
+          bluetooth.require_notes(song_id, note_id + notes.count(), note_id + notes.count() + NOTES_SIZE/2);
+        }
       }  
       if (state == SONG && notes.count() == 0) {
         state = MENU;
@@ -91,11 +96,12 @@ void interrupt_red()
     }
     else if (state == LIST) {
       start_song = millis();
+      note_id = 0;
       updateTimer();
       state = SONG;
       while (notes.count() > 0)
         notes.pop();
-      bluetooth.require_notes(song_id, 0, 200);
+      bluetooth.require_notes(song_id, 0, NOTES_SIZE);
     }
     else if (state == SONG) {
       state = MENU;
