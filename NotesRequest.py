@@ -41,7 +41,7 @@ class NotesRequest:
 		print('Received notes request:', self.params, songContentToSend)
 		if songContentToSend != 'Index out of range':
 			sock.send('N')
-			l = len(songContent)
+			l = len(songContentToSend)*2+3
 			print(l)
 			x = l.to_bytes(2, byteorder='big')
 			sock.send(bytes([x[0]]))

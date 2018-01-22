@@ -8,7 +8,6 @@
 #define BUFFER_SIZE 510
 #define MAX_TIMEOUT 1000
 #define SONGS_SIZE 2
-#define NOTES_SIZE 10
 
 #include <SimpleTimer.h>
 #include <QueueArray.h>
@@ -51,9 +50,6 @@ void setup()
 void loop()
 {
   bluetooth.read();
-
-  if (notes.count() == note_count)
-    start_song = millis();
   
   if (notes.count() > 0) {
       now = millis();
@@ -94,6 +90,8 @@ void interrupt_red()
       }
     }
     else if (state == LIST) {
+      start_song = millis();
+      updateTimer();
       state = SONG;
       while (notes.count() > 0)
         notes.pop();
@@ -142,7 +140,6 @@ void test_melody() {
 }
 
 void updateTimer() {
-  //logg("update timer", "");
   if (state == SONG)
      screen.refresh(state);
 }
